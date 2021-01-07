@@ -1,23 +1,29 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    public List<GameObject> oldList = new List<GameObject>();
-    public List<GameObject> newList = new List<GameObject>();
 
-    private void Awake()
+    public float speed;
+
+    private Rigidbody rig;
+
+    private void Start()
     {
-        newList.AddRange(oldList.ToArray());
+
+        rig = GetComponent<Rigidbody>();
     }
 
-    public void Change()
+    void FixedUpdate()
     {
-        oldList.Add(new GameObject());
-    }
 
-    public void Delete()
-    {
-        oldList.RemoveAt(0);
+        float t_hmove = Input.GetAxis("Horizontal");
+        float t_vmove = Input.GetAxis("Vertical");
+
+        Vector3 t_direction = new Vector3(t_hmove, 0, t_vmove);
+        t_direction.Normalize();
+
+        rig.velocity = transform.TransformDirection(t_direction) * speed * Time.deltaTime;
     }
 }
+
+
